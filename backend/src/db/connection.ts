@@ -26,6 +26,7 @@ const createTables = async () => {
       id SERIAL PRIMARY KEY,
       github_id INTEGER UNIQUE NOT NULL,
       name VARCHAR(255) NOT NULL,
+      owner VARCHAR(255) NOT NULL,
       full_name VARCHAR(255) NOT NULL,
       description TEXT,
       url VARCHAR(255) NOT NULL,
