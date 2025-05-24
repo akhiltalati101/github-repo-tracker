@@ -32,12 +32,6 @@ const RepositoryTracker = () => {
   const [markReleaseAsSeen] = useMutation(MARK_RELEASE_AS_SEEN);
   const [deleteRepository] = useMutation(DELETE_REPOSITORY);
 
-
-  // Refresh repositories when refresh is clicked
-  React.useEffect(() => {
-    refreshAllRepositories();
-  }, [])
-
   // Update trackedRepos when data is loaded
   React.useEffect(() => {
     if (data?.repositories) {
@@ -95,12 +89,21 @@ const RepositoryTracker = () => {
     );
   };
 
+  // Refresh repositories when refresh is clicked
+  const onRefreshRepositories = async () => {
+    const { data } = await refreshAllRepositories();
+    console.log("data", data);
+    if (data.refreshAllRepositories) {
+      setTrackedRepos(data.refreshAllRepositories)
+    }
+  }
+
   const drawerWidth = 300;
 
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar />
+      <AppBar onRefreshRepositories={onRefreshRepositories}/>
       <Drawer
         variant="permanent"
         sx={{

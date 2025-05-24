@@ -130,7 +130,7 @@ export const resolvers = {
               published_at,
               is_seen
             )
-            VALUES ($1, $2, $3, $4, $5, $6)
+            VALUES ($1, $2, $3, $4, $5, $6, $7)
           `, [
             repo.id,
             latest_release.id,

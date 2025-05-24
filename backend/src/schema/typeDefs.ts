@@ -22,6 +22,7 @@ export const typeDefs = gql`
     name: String
     body: String
     published_at: String
+    is_seen: Boolean!
     createdAt: String!
   }
 

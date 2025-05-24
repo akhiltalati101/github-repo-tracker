@@ -81,12 +81,18 @@ export const REFRESH_REPOSITORY = gql`
     refreshRepository(repositoryId: $repositoryId) {
       id
       name
+      owner
+      full_name
+      description
+      url
       has_unseen_releases
       latest_release {
+        id
         tag_name
         name
         body
         published_at
+        is_seen
       }
     }
   }

@@ -80,6 +80,10 @@ export const REFRESH_REPOSITORY = gql`
     refreshRepository(repositoryId: $repositoryId) {
       id
       name
+      owner
+      full_name
+      description
+      url
       has_unseen_releases
       latest_release {
         id
@@ -97,6 +101,10 @@ export const REFRESH_ALL_REPOSITORIES = gql`
     refreshAllRepositories {
       id
       name
+      owner
+      full_name
+      description
+      url
       has_unseen_releases
       latest_release {
         id
@@ -104,6 +112,7 @@ export const REFRESH_ALL_REPOSITORIES = gql`
         name
         body
         published_at
+        is_seen
       }
     }
   }
