@@ -92,7 +92,7 @@ The frontend will be available at `http://localhost:3000`
 - `GITHUB_TOKEN`: GitHub Personal Access Token
   - Required for accessing GitHub API
   - Create one at: GitHub Settings > Developer Settings > Personal Access Tokens
-  - Required scopes: `repo` and `read:user`
+  - Required scopes: public repositories
 
 ## Development
 
