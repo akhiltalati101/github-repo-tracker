@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql } from 'apollo-server-express';
 
 export const GET_REPOSITORIES = gql`
   query GetRepositories {
@@ -16,6 +16,7 @@ export const GET_REPOSITORIES = gql`
         name
         body
         published_at
+        is_seen
       }
     }
   }
@@ -37,6 +38,7 @@ export const GET_REPOSITORY = gql`
         name
         body
         published_at
+        is_seen
       }
     }
   }
@@ -53,7 +55,6 @@ export const ADD_REPOSITORY = gql`
       url
       has_unseen_releases
       latest_release {
-        id
         tag_name
         name
         body
@@ -82,7 +83,6 @@ export const REFRESH_REPOSITORY = gql`
       name
       has_unseen_releases
       latest_release {
-        id
         tag_name
         name
         body
@@ -97,6 +97,10 @@ export const REFRESH_ALL_REPOSITORIES = gql`
     refreshAllRepositories {
       id
       name
+      owner
+      full_name
+      description
+      url
       has_unseen_releases
       latest_release {
         id
@@ -104,6 +108,7 @@ export const REFRESH_ALL_REPOSITORIES = gql`
         name
         body
         published_at
+        is_seen
       }
     }
   }
@@ -113,4 +118,4 @@ export const DELETE_REPOSITORY = gql`
   mutation DeleteRepository($id: ID!) {
     deleteRepository(id: $id)
   }
-`;
+`; 

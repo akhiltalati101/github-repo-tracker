@@ -5,11 +5,12 @@ export const typeDefs = gql`
     id: ID!
     githubId: Int!
     name: String!
-    fullName: String!
+    owner: String!
+    full_name: String!
     description: String
     url: String!
-    latestRelease: Release
-    hasUnseenReleases: Boolean!
+    latest_release: Release
+    has_unseen_releases: Boolean!
     createdAt: String!
   }
 
@@ -17,11 +18,10 @@ export const typeDefs = gql`
     id: ID!
     repositoryId: Int!
     githubReleaseId: Int!
-    tagName: String!
+    tag_name: String!
     name: String
     body: String
-    publishedAt: String
-    isSeen: Boolean!
+    published_at: String
     createdAt: String!
   }
 
@@ -32,6 +32,7 @@ export const typeDefs = gql`
 
   type Mutation {
     addRepository(url: String!): Repository!
+    deleteRepository(id: ID!): Boolean!
     markReleaseAsSeen(releaseId: ID!): Release!
     refreshRepository(repositoryId: ID!): Repository!
     refreshAllRepositories: [Repository!]!

@@ -1,9 +1,8 @@
 import { Button, TextField } from '@mui/material';
 import React, { useState } from 'react';
-import { Repository } from '../RepositoryTracker';
 
 interface RepositorySearchProps {
-  onAddRepository: (repo: Repository) => void;
+  onAddRepository: (url: string) => void;
 }
 
 const RepositorySearch = ({ onAddRepository }: RepositorySearchProps) => {
@@ -16,11 +15,7 @@ const RepositorySearch = ({ onAddRepository }: RepositorySearchProps) => {
 
     setIsLoading(true);
     try {
-      // Parse GitHub URL or owner/repo format
-      let githubUrl = searchQuery;
-
-      console.log('githubUrl', githubUrl);
-
+      onAddRepository(searchQuery)
       setSearchQuery('');
     } catch (error) {
       console.error('Failed adding repository:', error);
@@ -30,27 +25,25 @@ const RepositorySearch = ({ onAddRepository }: RepositorySearchProps) => {
   };
 
   return (
-    <div>
-      <TextField
-        id="outlined-basic"
-        variant='outlined'
-        placeholder='github url'
-        InputProps={{
-          endAdornment: (
-            <Button
-              variant='outlined'
-              onClick={handleSearch}
-              disabled={isLoading}
-            >
-              {isLoading ? 'Adding...' : 'Add'}
-            </Button>
-          )
-        }}
-        sx={{ m: 0.5 }}
-        onChange={(e) => { setSearchQuery(e.target.value) }}
-        value={searchQuery}
-      />
-    </div>
+    <TextField
+      id="outlined-basic"
+      variant='outlined'
+      placeholder='github url'
+      InputProps={{
+        endAdornment: (
+          <Button
+            variant='outlined'
+            onClick={handleSearch}
+            disabled={isLoading}
+          >
+            {isLoading ? 'Adding...' : 'Add'}
+          </Button>
+        )
+      }}
+      sx={{ m: 0.5 }}
+      onChange={(e) => { setSearchQuery(e.target.value) }}
+      value={searchQuery}
+    />
 
   );
 };

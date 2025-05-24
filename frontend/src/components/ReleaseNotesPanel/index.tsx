@@ -1,27 +1,47 @@
 import React from 'react';
 import { Repository } from '../RepositoryTracker';
+import { Paper } from '@mui/material';
+import { marked } from 'marked';
 
 interface ReleaseNotesPanelProps {
     repository: Repository | null;
 }
 
 export const ReleaseNotesPanel: React.FC<ReleaseNotesPanelProps> = ({ repository }) => {
-    console.log(repository);
     if (!repository) {
         return (
-            <div className="h-full flex items-center justify-center bg-white rounded-lg shadow p-6">
-                <p className="text-gray-500">Select a repository to view release notes</p>
-            </div>
+            <Paper elevation={3} sx={{ p: 3, height: '100%', overflow: 'auto' }}>
+                Select a repository to view release notes
+            </Paper>
         );
     }
 
+    const formatDate = (dateString: string) => {
+        return new Date(Number(dateString)).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+    };
+
+    const markdownContent = `
+# ${repository.full_name}
+
+${repository.description ? repository.description : ''}
+
+${repository.latest_release ? `
+## Latest Release: ${repository.latest_release.tag_name}
+
+Published on ${formatDate(repository.latest_release.published_at)}
+
+${repository.latest_release.body || 'No release notes available.'}
+` : 'No releases available for this repository.'}
+`;
+
     return (
-        <div className="h-full bg-white rounded-lg shadow p-6">
-            <h2 className="text-xl font-semibold mb-4">Release Notes for {repository.name}</h2>
-            <div className="space-y-4">
-                <p>{repository.latestRelease?.notes}</p>
-            </div>
-        </div>
+        <Paper elevation={3} sx={{ p: 3, height: '100%', overflow: 'auto' }}>
+            <div dangerouslySetInnerHTML={{ __html: marked(markdownContent) }} />
+        </Paper>
     );
 };
 
