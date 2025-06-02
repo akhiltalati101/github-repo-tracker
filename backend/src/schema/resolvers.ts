@@ -20,9 +20,12 @@ export const resolvers = {
     repositories: async () => {
       const result = await client.query(`
         SELECT r.*, 
-               CASE WHEN lr.id IS NOT NULL AND lr.is_seen = false THEN true ELSE false END as has_unseen_releases
+               CASE WHEN EXISTS (
+                   SELECT 1 FROM releases 
+                   WHERE repository_id = r.id 
+                   AND is_seen = false
+               ) THEN true ELSE false END as has_unseen_releases
         FROM repositories r
-        LEFT JOIN releases lr ON r.id = lr.repository_id
         ORDER BY r.created_at DESC
       `);
       return result.rows;
@@ -31,9 +34,12 @@ export const resolvers = {
     repository: async (_: any, { id }: { id: string }) => {
       const result = await client.query(`
         SELECT r.*, 
-               CASE WHEN lr.id IS NOT NULL AND lr.is_seen = false THEN true ELSE false END as has_unseen_releases
+               CASE WHEN EXISTS (
+                   SELECT 1 FROM releases 
+                   WHERE repository_id = r.id 
+                   AND is_seen = false
+               ) THEN true ELSE false END as has_unseen_releases
         FROM repositories r
-        LEFT JOIN releases lr ON r.id = lr.repository_id
         WHERE r.id = $1
       `, [id]);
       return result.rows[0];
@@ -118,6 +124,8 @@ export const resolvers = {
           [latest_release.id]
         );
 
+        console.log("existingRelease", existingRelease.rows);
+
         if (!existingRelease.rows[0]) {
           // Insert new release
           await client.query(`
@@ -146,11 +154,16 @@ export const resolvers = {
       // Get updated repository with latest release info
       const updatedRepo = await client.query(`
         SELECT r.*, 
-               CASE WHEN lr.id IS NOT NULL AND lr.is_seen = false THEN true ELSE false END as has_unseen_releases
+               CASE WHEN EXISTS (
+                   SELECT 1 FROM releases 
+                   WHERE repository_id = r.id 
+                   AND is_seen = false
+               ) THEN true ELSE false END as has_unseen_releases
         FROM repositories r
-        LEFT JOIN releases lr ON r.id = lr.repository_id
         WHERE r.id = $1
       `, [repositoryId]);
+
+      console.log("updatedRepo", updatedRepo.rows[0]);
 
       return updatedRepo.rows[0];
     },
